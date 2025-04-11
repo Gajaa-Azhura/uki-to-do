@@ -11,7 +11,7 @@ function updateCounter() {
   const total = tasks.length;
   const completed = tasks.filter(t => t.completed).length;
   const uncompleted = total - completed;
-  taskCounter.textContent = `Completed: ${completed} | Uncompleted: ${uncompleted}`;
+  taskCounter.textContent = `total: ${uncompleted}`;
 }
 
 function renderTasks() {
