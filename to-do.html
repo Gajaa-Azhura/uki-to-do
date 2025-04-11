@@ -1,28 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List</title>
-   <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>To Do List</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-    <form id="task-form">
-    <div class="container">
-        <h1>To-Do List</h1>
-        
-            <input type="text" id="task-input" placeholder="Enter a new task" required>
-            <select id="priority-select">
-                <option value="🟢">🟢 Low</option>
-                <option value="🟡">🟡 Medium</option>
-                <option value="🔴">🔴 High</option>
-            </select>
-            <button type="submit">Add Task</button>
-        
-        <ul class="task-list" id="task-list"></ul>
+  <div class="todo-box">
+    <h1>To Do List</h1>
+    <div class="input-area">
+      <input type="text" id="taskInput" placeholder="Enter your task" />
+      <select id="priorityInput">
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
+      <button id="addTask">Add</button>
     </div>
-    <div id="task-count">Total tasks: 0</div>
-</form>
-<script src="script.js"></script>
+    <ul id="taskList"></ul>
+    <p id="taskCounter">total task :</p>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>

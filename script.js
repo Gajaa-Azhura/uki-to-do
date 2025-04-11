@@ -1,47 +1,74 @@
+const taskInput = document.getElementById('taskInput');
+const priorityInput = document.getElementById('priorityInput');
+const addTaskBtn = document.getElementById('addTask');
+const taskList = document.getElementById('taskList');
+const taskCounter = document.getElementById('taskCounter');
 
-    const taskForm = document.getElementById('task-form');
-    const taskInput = document.getElementById('task-input');
-    const prioritySelect = document.getElementById('priority-select');
-    const taskList = document.getElementById('task-list');
-    const taskCounter = document.getElementById('task-counter');
+let tasks = [];
 
-    function updateTaskCounter() {
-        const totalTasks = taskList.children.length;
-        taskCounter.textContent = `Total Tasks: ${totalTasks}`;
-    }
+function updateCounter() {
+  const total = tasks.length;
+  const completed = tasks.filter(t => t.completed).length;
+  const uncompleted = total - completed;
+  taskCounter.textContent = `Completed: ${completed} | Uncompleted: ${uncompleted}`;
+}
 
-    taskForm.addEventListener('submit', function(event) {
-        event.preventDefault();
+function renderTasks() {
+  taskList.innerHTML = '';
+  tasks.forEach(task => {
+    const li = document.createElement('li');
+    li.classList.add(task.priority);
 
-        const taskText = taskInput.value.trim();
-        const priority = prioritySelect.value;
-        if (taskText === '') return;
-
-        const listItem = document.createElement('li');
-
-        const prioritySpan = document.createElement('span');
-        prioritySpan.className = 'priority';
-        prioritySpan.textContent = `[${priority}]`;
-
-        const taskSpan = document.createElement('span');
-        taskSpan.textContent = taskText;
-
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Delete';
-        deleteButton.addEventListener('click', function() {
-            taskList.removeChild(listItem);
-            updateTaskCounter();
-        });
-
-        listItem.appendChild(prioritySpan);
-        listItem.appendChild(taskSpan);
-        listItem.appendChild(deleteButton);
-        taskList.appendChild(listItem);
-
-        taskInput.value = '';
-        updateTaskCounter();
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.addEventListener('change', () => {
+      removeTask(task.id);
     });
-    const taskCountDisplay = document.getElementById('task-count');
-    function updateTaskCount() {
-        taskCountDisplay.textContent = `Total tasks: ${taskList.children.length}`;
-    }
+
+    const span = document.createElement('span');
+    span.textContent = task.text;
+
+    li.appendChild(checkbox);
+    li.appendChild(span);
+    taskList.appendChild(li);
+  });
+
+  updateCounter();
+}
+
+function saveTasks() {
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+function loadTasks() {
+  const saved = localStorage.getItem('tasks');
+  tasks = saved ? JSON.parse(saved) : [];
+  renderTasks();
+}
+
+function removeTask(id) {
+  tasks = tasks.filter(task => task.id !== id);
+  saveTasks();
+  renderTasks();
+}
+
+addTaskBtn.addEventListener('click', () => {
+  const text = taskInput.value.trim();
+  const priority = priorityInput.value;
+  const priority = priorityInput.value;
+
+  if (text !== '') {
+    tasks.push({
+      id: Date.now(),
+      text,
+      priority,
+      completed: false
+    });
+    taskInput.value = '';
+    priorityInput.value = 'low';
+    saveTasks();
+    renderTasks();
+  }
+});
+
+loadTasks();
